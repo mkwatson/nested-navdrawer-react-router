@@ -24,7 +24,7 @@ const PageD = () => (
 
 const NavLink = ({ primaryText, to, nestedItems, group }) => (
   <Route path={to} >
-    {({ match, location }) => {
+    {({ match }) => {
 
       const nestedItemComponents = nestedItems ? nestedItems.map(props => <NavLink {...props} key={props.to} />) : null;
 
@@ -72,7 +72,7 @@ const navItems = [
         to: "/Page3/PageC",
       },
       {
-        primaryText: "PageB",
+        primaryText: "PageD",
         to: "/Page3/PageD",
       }
     ]
@@ -91,8 +91,8 @@ const App = () => (
           {/* <Route exact path="/Page2" location={location} component={Page2} /> */}
           <Route path="/Page2/PageA" location={location} component={PageA} />
           <Route path="/Page2/PageB" location={location} component={PageB} />
-          <Route path="/Page3/PageC" location={location} component={PageA} />
-          <Route path="/Page3/PageD" location={location} component={PageB} />
+          <Route path="/Page3/PageC" location={location} component={PageC} />
+          <Route path="/Page3/PageD" location={location} component={PageD} />
         </Switch>
       </NavigationDrawer>
 
