@@ -26,7 +26,17 @@ const NavLink = ({ primaryText, to, nestedItems, group }) => (
   <Route path={to} >
     {({ match }) => {
 
-      const nestedItemComponents = nestedItems ? nestedItems.map(props => <NavLink {...props} key={props.to} />) : null;
+      const nestedItemComponents = nestedItems
+        ? nestedItems.map(({ primaryText, to: currentTo, group, nestedItems }) => (
+          <NavLink
+            primaryText={primaryText}
+            to={`${to}${currentTo}`}
+            group={group}
+            nestedItems={nestedItems}
+            key={to}
+          />)
+        )
+        : null;
 
       return (
         <ListItem
@@ -54,11 +64,11 @@ const navItems = [
     nestedItems: [
       {
         primaryText: "PageA",
-        to: "/Page2/PageA",
+        to: "/PageA",
       },
       {
         primaryText: "PageB",
-        to: "/Page2/PageB",
+        to: "/PageB",
       }
     ]
   },
@@ -69,11 +79,11 @@ const navItems = [
     nestedItems: [
       {
         primaryText: "PageC",
-        to: "/Page3/PageC",
+        to: "/PageC",
       },
       {
         primaryText: "PageD",
-        to: "/Page3/PageD",
+        to: "/PageD",
       }
     ]
   }
