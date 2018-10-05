@@ -6,19 +6,36 @@ const Page1 = () => (
   <h1>Page1</h1>
 )
 
-const Page2 = () => (
-  <h1>Page2</h1>
+const PageA = () => (
+  <h1>PageA</h1>
 )
 
-const NavLink = ({ primaryText, to }) => (
+const PageB = () => (
+  <h1>PageB</h1>
+)
+
+const PageC = () => (
+  <h1>PageC</h1>
+)
+
+const PageD = () => (
+  <h1>PageD</h1>
+)
+
+const NavLink = ({ primaryText, to, nestedItems, group }) => (
   <Route path={to} >
-    {({ match }) => {
+    {({ match, location }) => {
+
+      const nestedItemComponents = nestedItems ? nestedItems.map(props => <NavLink {...props} key={props.to} />) : null;
+
       return (
         <ListItem
-          component={Link}
+          component={group ? 'div' : Link}
           active={!!match}
+          defaultVisible={group && !!match}
           to={to}
           primaryText={primaryText}
+          nestedItems={nestedItemComponents}
         />
       );
     }}
@@ -32,7 +49,33 @@ const navItems = [
   },
   {
     primaryText: "Page2",
-    to: "/Page2"
+    to: "/Page2",
+    group: true,
+    nestedItems: [
+      {
+        primaryText: "PageA",
+        to: "/Page2/PageA",
+      },
+      {
+        primaryText: "PageB",
+        to: "/Page2/PageB",
+      }
+    ]
+  },
+  {
+    primaryText: "Page3",
+    to: "/Page3",
+    group: true,
+    nestedItems: [
+      {
+        primaryText: "PageC",
+        to: "/Page3/PageC",
+      },
+      {
+        primaryText: "PageB",
+        to: "/Page3/PageD",
+      }
+    ]
   }
 ]
 
@@ -44,8 +87,12 @@ const App = () => (
         navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
       >
         <Switch key={location.key} id="content" name="content" label="content">
-          <Route exact path="/Page1" location={location} component={Page1} />
-          <Route path="/Page2" location={location} component={Page2} />
+          <Route path="/Page1" location={location} component={Page1} />
+          {/* <Route exact path="/Page2" location={location} component={Page2} /> */}
+          <Route path="/Page2/PageA" location={location} component={PageA} />
+          <Route path="/Page2/PageB" location={location} component={PageB} />
+          <Route path="/Page3/PageC" location={location} component={PageA} />
+          <Route path="/Page3/PageD" location={location} component={PageB} />
         </Switch>
       </NavigationDrawer>
 
