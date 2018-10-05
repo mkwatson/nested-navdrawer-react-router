@@ -1,28 +1,57 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { NavigationDrawer, ListItem } from 'react-md';
+import { Switch, Route, Link } from 'react-router-dom';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+const Page1 = () => (
+  <h1>Page1</h1>
+)
+
+const Page2 = () => (
+  <h1>Page2</h1>
+)
+
+const NavLink = ({ primaryText, to }) => (
+  <Route path={to} >
+    {({ match }) => {
+      return (
+        <ListItem
+          component={Link}
+          active={!!match}
+          to={to}
+          primaryText={primaryText}
+        />
+      );
+    }}
+  </Route>
+)
+
+const navItems = [
+  {
+    primaryText: "Page1",
+    to: "/Page1"
+  },
+  {
+    primaryText: "Page2",
+    to: "/Page2"
   }
-}
+]
+
+const App = () => (
+  <Route
+    render={({ location }) => (
+      <NavigationDrawer
+        drawerTitle="Nested Routes"
+        navItems={navItems.map(props => <NavLink {...props} key={props.to} />)}
+      >
+        <Switch key={location.key} id="content" name="content" label="content">
+          <Route exact path="/Page1" location={location} component={Page1} />
+          <Route path="/Page2" location={location} component={Page2} />
+        </Switch>
+      </NavigationDrawer>
+
+    )}
+  />
+)
+
 
 export default App;
